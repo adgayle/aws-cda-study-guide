@@ -226,12 +226,19 @@ Migration Strategies
     * Object level ACL
 
 ### DynamoDB
+No SQL low latency database with tables, items (rows) and attributes (columns)
 * Stores 3 copies across AZs
 * Partitioned based on a partition key (hash)
-* Sort key aka. range key
+* Sort key (composite key) aka. range key
+* Primary key can be
+    * partition key
+    * partition key & sort key
+* Fine grained access control using IAM
+    * Use dynamoDB:LeadingKeys to access only items matching their UserID
 * Secondary keys provide alternate search / query keys
-* 10GB max
+    * 10GB max
 * Secondary indexes
+    * Enables fast queries on specific columns using alternative partition / sort keys
     * Local
         * Same partition key different sort key
         * Must be created at the same time as the table
@@ -270,7 +277,12 @@ Global Tables
 
 Performance Tips
 * Reduce the impact of scans by reducing the page size
-* Use Projection Expressions to restrict the attributes returned from a scan or query
+* Use ProjectExpressions parameter to restrict the attributes returned from a scan or query
+* Query to find distinct item using primary key (cheap I/O) sorted ascending by default
+* ScanIndexForward parameter reverses sort order for descending for query
+* Avoid scans as they return the entire table (expensive I/O)
+* Parallel scans are better than sequential scans by still have a high I/O impact
+* Use Exponential Backoff aftr ProvisionedThroughputExceededException to wait longer between retries
 
 ### SNS
 * Push messages
