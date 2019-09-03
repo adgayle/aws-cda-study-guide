@@ -185,3 +185,21 @@ Troubleshooting
 * Private subnet EC2 cannot reach Internet without NAT
 * Internet Gateway (IGW) & route needed to reach the Internet in public subnets
 * EBS volumes except boot can be attached and detached from EC2 while running
+
+## Refactoring
+Best Practices
+* Serverless provisioned at time of need
+* Message queues handle communication between applications
+* Static web assets are stored externally e.g. S3
+* User authentication and user state storage are handled by managed AWS services
+* Avoid any single points of failure
+* Use caching e.g. Elasticache
+
+Migration Strategies
+* 6 R's: Rehost, Replatform, Repurchase, Refactor, Retain, Retire
+* Durability & availability are different
+* Scalability and elasticity are different
+* Persistence and instance store do not go together
+* Migrate monolith to microservices to functions
+* Go serverless
+
