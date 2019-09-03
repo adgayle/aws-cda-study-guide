@@ -203,3 +203,130 @@ Migration Strategies
 * Migrate monolith to microservices to functions
 * Go serverless
 
+## Development
+### Best Practices
+* Choose managed services
+* Do not expose resources or APIs directly
+* Use edge services & API gateway
+* Do not store session state on server use Elasticache or DB
+* Decouple your infrastructure e.g. use SQS
+
+### S3
+* Choose region based on
+    * Latency
+    * Cost
+    * Regulatory requirements
+* Each object has a unique key
+* Path style URL (recommended)
+* Virtual style URL (deprecated)
+* Pre-signed URL use for sharing without authentication
+* Cross origin resource sharing (CORS) to avoid cross site scripting errors
+* Access
+    * Bucket policy
+    * Object level ACL
+
+### DynamoDB
+* Stores 3 copies across AZs
+* Partitioned based on a partition key (hash)
+* Sort key aka. range key
+* Secondary keys provide alternate search / query keys
+* 10GB max
+* Secondary indexes
+    * Local
+        * Same partition key different sort key
+        * Must be created at the same time as the table
+    * Global
+        * Partition and sort key are different from the table
+        * Can be created at ant time
+* Consistency model
+    * Read capacity units (RCU)
+        * Strongly consistent 1 x 4KB read per second
+        * Eventually consistent 2 x 4KB read per second
+    * Write capacity units (WCU)
+        * 1 x 1KB write per second
+
+DynamoDB Streams
+* Captures new item
+* Captures before and after for updates
+* Captures before deletes
+* Retained for 24 hours
+
+DynamoDB Features
+* Conditional write
+* TTL to expire items
+    * Use epoch number which is better than string dates for this purpose
+* Optimistic locking
+* Batch operations
+    * BatchGetItem
+    * BatchWriteItem
+
+DynamoDB Accelerator (DAX)
+* Caching for DynamoDB
+    * Eventual consistency only
+    * Helps read heavy workloads
+
+Global Tables
+* Use when replication to other regions is required
+
+Performance Tips
+* Reduce the impact of scans by reducing the page size
+* Use Projection Expressions to restrict the attributes returned from a scan or query
+
+### SNS
+* Push messages
+    * Topic
+    * Subscriber
+    * Message
+
+### SQS
+* Polled for messages
+* Queue types
+    * Standard (fastest)
+    * FIFO (delivered at most once)
+* Visibility timeout default 30 seconds (hides message during processing)
+* Long polling (most cost efficient)
+    * ReceiveMessageWaitTimeSeconds 20 seconds maximum setting
+
+### Step Functions
+* Coordinate components of distributed applications & microservices
+* Visual workflows
+* Built with Amazon state language
+
+### API Gateway
+* Multiple versions & stages
+    * Use variables e.g. StageVariables.X where X is the name of the variable
+* Import from formats
+    * Swagger
+    * OpenAPI
+
+### CloudFront
+* Path patterns
+* Request headers, cookies, querystrings
+* TTL (invalidations are billed used versions)
+* Restrict access
+    * Signed URL or Signed cookie
+
+Elasticache
+* Use Redis for leaderboards, chat, queues & anything that needs to preserve the in memory cache (snapshots)
+* Cannot change a subnet group after the cluster is deployed
+* Memcache
+    * Simple
+    * No encryption
+    * Multithreaded
+    * Data partitions
+    * No replication
+    * No pub/sub
+* Redis
+    * Complex
+    * Yes encryption
+    * Not multithreaded
+    * No data partitions
+    * Yes replicated
+    * Pub/sub
+    * HIPAA, PCI and FedRamp compliant
+
+### Kinesis
+* Default retention is 24hrs maximum time is 7 days
+* Maximum data blob size is 1MB
+* Use shards to increase scale each supports 1000 put records per second
+* ProvisionedThroughputExceeded fix by increasing shards (sustained)
