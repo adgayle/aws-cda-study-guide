@@ -149,3 +149,39 @@ Steps 1, 2, 3, approval and 4 are Continuous Delivery
     * Use "Block Use" in advanced security for compromised credentials
     * Use for auto sign in & out processing
 
+## Monitoring
+AWS error codes
+* 400 handle in the application (user errors)
+* 500 use retries or exponential backoff (server errors)
+
+Logs to collect and analyze
+* System
+* HTTP
+
+Monitoring with CloudWatch
+* Instance health
+* Managed service health
+* Network performance
+* Utilization / cost efficiency
+    * Under used or unused instances
+* Use custom metrics
+
+CloudTrail
+* Who did what and when via the AWS API
+* Does not track S3 or Lambda data events unless specifically enabled at additional cost
+
+X-Ray
+* Creates a service map of the application
+* Identifies errors & bugs
+* Identifies performance bottle necks
+* Build your own analysis & visualization maps
+* Use interceptors to capture all HTTP traffic 
+
+DynamoDB ProvisionedThroughtputExceededException
+* Exceeding capacity on partition key
+
+Troubleshooting
+* Check security groups & NACLs
+* Private subnet EC2 cannot reach Internet without NAT
+* Internet Gateway (IGW) & route needed to reach the Internet in public subnets
+* EBS volumes except boot can be attached and detached from EC2 while running
