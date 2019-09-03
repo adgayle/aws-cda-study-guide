@@ -306,7 +306,7 @@ Performance Tips
 * Restrict access
     * Signed URL or Signed cookie
 
-Elasticache
+### Elasticache
 * Use Redis for leaderboards, chat, queues & anything that needs to preserve the in memory cache (snapshots)
 * Cannot change a subnet group after the cluster is deployed
 * Memcache
